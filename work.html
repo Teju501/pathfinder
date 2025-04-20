@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Internship Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #1f1f1f;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar h1 {
+            color: #bb86fc;
+            text-align: center;
+        }
+
+        .home-section {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .home-section h2 {
+            font-size: 2.5rem;
+            color: #bb86fc;
+            margin-bottom: 20px;
+        }
+
+        .home-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #bb86fc;
+            color: #121212;
+        }
+
+        .btn-secondary {
+            background-color: #03dac6;
+            color: #121212;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.3);
+        }
+
+        .form-container {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 30px auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            background-color: #2f2f2f;
+            color: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #bb86fc;
+        }
+
+        .dashboard {
+            display: none;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .internship-card {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .internship-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .internship-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .skill-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .skill-checkbox input[type="checkbox"] {
+            width: auto;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .add-internship-form {
+            display: none;
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            margin-bottom: 20px;
+            background-color: #bb86fc;
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.3);
+            background-color: #a370e0;
+        }
+
+        .upload-btn {
+            background-color: #03dac6;
+            color: #121212;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #bb86fc;
+        }
+
+        .no-internships {
+            text-align: center;
+            padding: 20px;
+            color: #888888;
+        }
+
+        .apply-btn {
+            background-color: #03dac6;
+            color: #121212;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .apply-btn:hover {
+            background-color: #02b5a0;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn {
+            background-color: #ff4444;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Smart Internship Platform</h1>
+    </nav>
+
+    <!-- Home Page -->
+    <section id="homePage" class="container">
+        <div class="home-section">
+            <h2>Welcome to Smart Internship Platform</h2>
+            <p>Connect students with valuable internship opportunities. Our platform helps students find internships matching their skills and departments, while teachers can easily post and manage internship listings.</p>
+            <p>Get started by selecting your role below:</p>
+            <div class="buttons-container">
+                <button class="btn btn-primary" onclick="showStudentRegistration()">Student Registration</button>
+                <button class="btn btn-secondary" onclick="showTeacherRegistration()">Teacher Registration</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Registration -->
+    <section id="studentRegistration" style="display: none;">
+        <div class="container">
+            <button class="back-btn" onclick="showHomePage()">← Back to Home</button>
+            <div class="form-container">
+                <h2>Student Registration</h2>
+                <form id="studentRegForm" onsubmit="registerStudent(event)">
+                    <div class="form-group">
+                        <label for="studentName">Name</label>
+                        <input type="text" id="studentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Email</label>
+                        <input type="email" id="studentEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentDept">Department</label>
+                        <select id="studentDept" required>
+                            <option value="">Select Department</option>
+                            <option value="cse">CSE</option>
+                            <option value="aiml">AIML</option>
+                            <option value="cic">CIC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentCGPA">CGPA</label>
+                        <input type="number" id="studentCGPA" step="0.01" min="0" max="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Skills</label>
+                        <div class="skills-container">
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="skill-js" value="JavaScript">
+                                <label for="skill-js">JavaScript</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="skill-python" value="Python">
+                                <label for="skill-python">Python</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="skill-java" value="Java">
+                                <label for="skill-java">Java</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="skill-react" value="React">
+                                <label for="skill-react">React</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="skill-ml" value="Machine Learning">
+                                <label for="skill-ml">Machine Learning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentResume">Resume Upload (Optional)</label>
+                        <input type="file" id="studentResume" accept=".pdf,.doc,.docx">
+                        <div id="resumeFileName" class="file-name"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teacher Registration -->
+    <section id="teacherRegistration" style="display: none;">
+        <div class="container">
+            <button class="back-btn" onclick="showHomePage()">← Back to Home</button>
+            <div class="form-container">
+                <h2>Teacher Registration</h2>
+                <form id="teacherRegForm" onsubmit="registerTeacher(event)">
+                    <div class="form-group">
+                        <label for="teacherEmail">Email</label>
+                        <input type="email" id="teacherEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPassword">Password</label>
+                        <input type="password" id="teacherPassword" required>
+                        <div id="passwordError" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherDept">Department</label>
+                        <select id="teacherDept" required>
+                            <option value="">Select Department</option>
+                            <option value="cse">CSE</option>
+                            <option value="aiml">AIML</option>
+                            <option value="cic">CIC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Skills</label>
+                        <div class="skills-container">
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="teacher-skill-js" value="JavaScript">
+                                <label for="teacher-skill-js">JavaScript</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="teacher-skill-python" value="Python">
+                                <label for="teacher-skill-python">Python</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="teacher-skill-java" value="Java">
+                                <label for="teacher-skill-java">Java</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="teacher-skill-react" value="React">
+                                <label for="teacher-skill-react">React</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="teacher-skill-ml" value="Machine Learning">
+                                <label for="teacher-skill-ml">Machine Learning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Dashboard -->
+    <section id="studentDashboard" class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Student Dashboard</h2>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="profile-card">
+                <h3>Profile</h3>
+                <p><strong>Name:</strong> <span id="profileName"></span></p>
+                <p><strong>Department:</strong> <span id="profileDept"></span></p>
+                <p><strong>CGPA:</strong> <span id="profileCGPA"></span></p>
+                <p><strong>Skills:</strong> <span id="profileSkills"></span></p>
+                <p><strong>Resume:</strong> <span id="profileResume"></span></p>
+            </div>
+            <h3>Available Internships</h3>
+            <div id="studentInternshipList">
+                <div class="no-internships">No internships available at the moment.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teacher Dashboard -->
+    <section id="teacherDashboard" class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Teacher Dashboard</h2>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <button class="btn btn-primary" onclick="showAddInternshipForm()">Post New Internship</button>
+            
+            <div id="addInternshipForm" class="add-internship-form">
+                <h3>Add New Internship</h3>
+                <form onsubmit="addInternship(event)">
+                    <div class="form-group">
+                        <label for="internshipTitle">Internship Title</label>
+                        <input type="text" id="internshipTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipDept">Department</label>
+                        <select id="internshipDept" required>
+                            <option value="cse">CSE</option>
+                            <option value="aiml">AIML</option>
+                            <option value="cic">CIC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Required Skills</label>
+                        <div class="skills-container">
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="intern-skill-js" value="JavaScript">
+                                <label for="intern-skill-js">JavaScript</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="intern-skill-python" value="Python">
+                                <label for="intern-skill-python">Python</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="intern-skill-java" value="Java">
+                                <label for="intern-skill-java">Java</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="intern-skill-react" value="React">
+                                <label for="intern-skill-react">React</label>
+                            </div>
+                            <div class="skill-checkbox">
+                                <input type="checkbox" id="intern-skill-ml" value="Machine Learning">
+                                <label for="intern-skill-ml">Machine Learning</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipDuration">Duration (in weeks)</label>
+                        <input type="number" id="internshipDuration" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipStipend">Stipend (₹/month)</label>
+                        <input type="number" id="internshipStipend" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipLink">Link to Apply</label>
+                        <input type="url" id="internshipLink" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="internshipDeadline">Application Deadline</label>
+                        <input type="date" id="internshipDeadline" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Internship</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideAddInternshipForm()">Cancel</button>
+                </form>
+            </div>
+
+            <h3>Posted Internships</h3>
+            <div id="teacherInternshipList">
+                <div class="no-internships">No internships posted yet.</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Data storage
+        let students = [];
+        let teachers = [];
+        let internships = [];
+        let currentStudent = null;
+        let currentTeacher = null;
+
+        // Navigation functions
+        function showHomePage() {
+            hideAllSections();
+            document.getElementById('homePage').style.display = 'block';
+        }
+
+        function showStudentRegistration() {
+            hideAllSections();
+            document.getElementById('studentRegistration').style.display = 'block';
+        }
+
+        function showTeacherRegistration() {
+            hideAllSections();
+            document.getElementById('teacherRegistration').style.display = 'block';
+        }
+
+        function hideAllSections() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('studentRegistration').style.display = 'none';
+            document.getElementById('teacherRegistration').style.display = 'none';
+            document.getElementById('studentDashboard').style.display = 'none';
+            document.getElementById('teacherDashboard').style.display = 'none';
+        }
+
+        // Logout function
+        function logout() {
+            currentStudent = null;
+            currentTeacher = null;
+            showHomePage();
+        }
+
+        // Student registration
+        function registerStudent(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const dept = document.getElementById('studentDept').value;
+            const cgpa = document.getElementById('studentCGPA').value;
+            const skills = getSelectedSkills('skill-');
+            const resumeFile = document.getElementById('studentResume').files[0];
+            const resumeName = resumeFile ? resumeFile.name : 'Not uploaded';
+
+            const student = {
+                name,
+                email,
+                dept,
+                cgpa,
+                skills,
+                resume: resumeName
+            };
+
+            students.push(student);
+            currentStudent = student;
+            
+            // Show student dashboard
+            showStudentDashboard();
+        }
+
+        // Teacher registration
+        function registerTeacher(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('teacherEmail').value;
+            const password = document.getElementById('teacherPassword').value;
+            const dept = document.getElementById('teacherDept').value;
+            const skills = getSelectedSkills('teacher-skill-');
+            
+            // Password validation
+            if (password !== 'tnp@123') {
+                document.getElementById('passwordError').textContent = 'Wrong password';
+                return;
+            }
+
+            const teacher = {
+                email,
+                dept,
+                skills
+            };
+
+            teachers.push(teacher);
+            currentTeacher = teacher;
+            
+            // Show teacher dashboard
+            showTeacherDashboard();
+        }
+
+        // Get selected skills
+        function getSelectedSkills(prefix) {
+            const skills = [];
+            const checkboxes = document.querySelectorAll(`input[id^="${prefix}"]:checked`);
+            checkboxes.forEach(checkbox => skills.push(checkbox.value));
+            return skills;
+        }
+
+        // Show student dashboard
+        function showStudentDashboard() {
+            hideAllSections();
+            document.getElementById('studentDashboard').style.display = 'block';
+            
+            // Update profile information
+            document.getElementById('profileName').textContent = currentStudent.name;
+            document.getElementById('profileDept').textContent = currentStudent.dept.toUpperCase();
+            document.getElementById('profileCGPA').textContent = currentStudent.cgpa;
+            document.getElementById('profileSkills').textContent = currentStudent.skills.join(', ');
+            document.getElementById('profileResume').textContent = currentStudent.resume;
+            
+            // Show available internships
+            showStudentInternships();
+        }
+
+        // Show teacher dashboard
+        function showTeacherDashboard() {
+            hideAllSections();
+            document.getElementById('teacherDashboard').style.display = 'block';
+            
+            // Show posted internships
+            showTeacherInternships();
+        }
+
+        // Show add internship form
+        function showAddInternshipForm() {
+            document.getElementById('addInternshipForm').style.display = 'block';
+        }
+
+        // Hide add internship form
+        function hideAddInternshipForm() {
+            document.getElementById('addInternshipForm').style.display = 'none';
+        }
+
+        // Add new internship
+        function addInternship(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('internshipTitle').value;
+            const dept = document.getElementById('internshipDept').value;
+            const skills = getSelectedSkills('intern-skill-');
+            const duration = document.getElementById('internshipDuration').value;
+            const stipend = document.getElementById('internshipStipend').value;
+            const link = document.getElementById('internshipLink').value;
+            const deadline = document.getElementById('internshipDeadline').value;
+            
+            const internship = {
+                id: Date.now(),
+                title,
+                dept,
+                skills,
+                duration,
+                stipend,
+                link,
+                deadline,
+                postedBy: currentTeacher.email
+            };
+            
+            internships.push(internship);
+            hideAddInternshipForm();
+            showTeacherInternships();
+            
+            // Refresh student dashboard if open
+            if (currentStudent) {
+                showStudentInternships();
+            }
+        }
+
+        // Show internships for teacher
+        function showTeacherInternships() {
+            const container = document.getElementById('teacherInternshipList');
+            const teacherInternships = internships.filter(i => i.postedBy === currentTeacher.email);
+            
+            if (teacherInternships.length === 0) {
+                container.innerHTML = '<div class="no-internships">No internships posted yet.</div>';
+                return;
+            }
+            
+            container.innerHTML = teacherInternships.map(internship => {
+                const isExpired = new Date(internship.deadline) < new Date();
+                return `
+                    <div class="internship-card ${isExpired ? 'disabled' : ''}">
+                        <h4>${internship.title}</h4>
+                        <p><strong>Department:</strong> ${internship.dept.toUpperCase()}</p>
+                        <p><strong>Skills Required:</strong> ${internship.skills.join(', ')}</p>
+                        <p><strong>Duration:</strong> ${internship.duration} weeks</p>
+                        <p><strong>Stipend:</strong> ₹${internship.stipend}/month</p>
+                        <p><strong>Deadline:</strong> ${new Date(internship.deadline).toLocaleDateString()}</p>
+                        <p><strong>Status:</strong> ${isExpired ? 'Expired' : 'Active'}</p>
+                        ${!isExpired ? `<a href="${internship.link}" target="_blank" class="btn btn-primary">View Application</a>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Show internships for student
+        function showStudentInternships() {
+            const container = document.getElementById('studentInternshipList');
+            
+            // Filter internships based on student's department and skills
+            const relevantInternships = internships.filter(internship => {
+                const isExpired = new Date(internship.deadline) < new Date();
+                const matchesDept = internship.dept === currentStudent.dept;
+                const hasMatchingSkills = internship.skills.some(skill => 
+                    currentStudent.skills.includes(skill)
+                );
+                
+                return !isExpired && (matchesDept || hasMatchingSkills);
+            });
+            
+            if (relevantInternships.length === 0) {
+                container.innerHTML = '<div class="no-internships">No internships available at the moment.</div>';
+                return;
+            }
+            
+            container.innerHTML = relevantInternships.map(internship => `
+                <div class="internship-card">
+                    <h4>${internship.title}</h4>
+                    <p><strong>Department:</strong> ${internship.dept.toUpperCase()}</p>
+                    <p><strong>Skills Required:</strong> ${internship.skills.join(', ')}</p>
+                    <p><strong>Duration:</strong> ${internship.duration} weeks</p>
+                    <p><strong>Stipend:</strong> ₹${internship.stipend}/month</p>
+                    <p><strong>Deadline:</strong> ${new Date(internship.deadline).toLocaleDateString()}</p>
+                    <a href="${internship.link}" target="_blank" class="apply-btn">Apply Now</a>
+                </div>
+            `).join('');
+        }
+
+        // File upload handling
+        document.getElementById('studentResume').addEventListener('change', function(event) {
+            const fileName = event.target.files[0] ? event.target.files[0].name : '';
+            document.getElementById('resumeFileName').textContent = fileName;
+        });
+
+        // Check for expired internships periodically
+        setInterval(() => {
+            if (currentStudent) {
+                showStudentInternships();
+            }
+            if (currentTeacher) {
+                showTeacherInternships();
+            }
+        }, 60000); // Check every minute
+    </script>
+</body>
+</html>
